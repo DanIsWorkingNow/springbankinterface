@@ -1,0 +1,457 @@
+/* CloseAccount.css */
+
+.close-account {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header Section */
+.close-account-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.close-account-header h2 {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.close-account-header p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Warning Notice */
+.warning-notice {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  border: 1px solid #ffc107;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  box-shadow: 0 2px 10px rgba(255, 193, 7, 0.1);
+}
+
+.warning-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.warning-content {
+  flex: 1;
+}
+
+.warning-content h4 {
+  color: #856404;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.warning-content p {
+  color: #856404;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Success Message */
+.success-message {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  border: 1px solid #28a745;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(40, 167, 69, 0.15);
+}
+
+.success-message h3 {
+  color: #155724;
+  margin: 0 0 1rem 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.success-message p {
+  color: #155724;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.1rem;
+}
+
+.account-closure-details {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-row span:first-child {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.detail-row .status-previous {
+  color: #28a745;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.detail-row .status-closed {
+  color: #dc3545;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.detail-row .balance {
+  color: #007bff;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Form Styling */
+.close-account-form {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.form-group input.error {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.error-text {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+  font-weight: 500;
+}
+
+.help-text {
+  color: #6c757d;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Form Actions */
+.form-actions {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.close-button {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+  min-width: 250px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.close-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #c82333, #bd2130);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+}
+
+.close-button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.button-icon {
+  font-size: 1.2rem;
+}
+
+/* Confirmation Dialog */
+.confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.confirmation-dialog {
+  background: white;
+  border-radius: 12px;
+  padding: 0;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.confirmation-header {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px 12px 0 0;
+}
+
+.confirmation-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.confirmation-content {
+  padding: 2rem;
+}
+
+.confirmation-content p {
+  font-size: 1.1rem;
+  margin: 0 0 1.5rem 0;
+  color: #2c3e50;
+}
+
+.confirmation-warning {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.confirmation-warning h4 {
+  color: #856404;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.confirmation-warning ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #856404;
+}
+
+.confirmation-warning li {
+  margin: 0.25rem 0;
+  line-height: 1.4;
+}
+
+.confirmation-actions {
+  padding: 1.5rem 2rem 2rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.confirm-button {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.confirm-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #c82333, #bd2130);
+  transform: translateY(-1px);
+}
+
+.cancel-button {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-button:hover:not(:disabled) {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+.confirm-button:disabled,
+.cancel-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Information Section */
+.close-account-info {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.close-account-info h4 {
+  color: #495057;
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.close-account-info ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.close-account-info li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  color: #495057;
+  line-height: 1.4;
+}
+
+.close-account-info li:before {
+  content: "ℹ️";
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .close-account {
+    padding: 1rem;
+  }
+  
+  .close-account-form {
+    padding: 1.5rem;
+  }
+  
+  .warning-notice {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .close-account-header h2 {
+    font-size: 2rem;
+  }
+  
+  .confirmation-dialog {
+    width: 95%;
+    margin: 1rem;
+  }
+  
+  .confirmation-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .confirm-button,
+  .cancel-button {
+    width: 100%;
+  }
+}
+
+/* Loading State Modifications */
+.close-account.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .warning-notice {
+    border-width: 2px;
+  }
+  
+  .success-message {
+    border-width: 2px;
+  }
+  
+  .form-group input {
+    border-width: 2px;
+  }
+}
