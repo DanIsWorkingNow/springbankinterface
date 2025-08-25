@@ -1,4 +1,4 @@
-// src/App.js - Improved Design with Centered Header & Footer
+// src/App.js - Improved Design with Inline SpringLeaf Logo Styles
 import React, { useState, useEffect } from 'react';
 
 // CUSTOMER COMPONENTS (Working)
@@ -78,21 +78,50 @@ const App = () => {
 
   return (
     <div className="springbank-app">
-      {/* Modern Centered Header */}
+      {/* Modern Centered Header with SpringLeaf Logo on Right */}
       <header className="springbank-header-main">
         <div className="springbank-header-content">
           <div className="springbank-brand-section">
-            <h1 className="springbank-app-title">🏦 SpringBank</h1>
-            <p className="springbank-app-subtitle">Complete Banking Management System</p>
+            <div className="springbank-logo-container">
+              <h1 className="springbank-app-title">
+                <span className="springbank-bank-emoji">🏦</span>
+                SpringBank
+              </h1>
+            </div>
+            <p className="springbank-app-subtitle">Account Banking Management System</p>
           </div>
           
-          {/* Backend Status Indicator */}
-          <div className="springbank-status-section">
-            <span className={`springbank-server-status springbank-status-${serverStatus}`}>
-              {serverStatus === 'connected' ? '🟢 BACKEND CONNECTED' : 
-               serverStatus === 'disconnected' ? '🔴 BACKEND DISCONNECTED' : 
-               '🟡 CONNECTING...'}
-            </span>
+          {/* SpringLeaf Logo on Right Side with Inline Styles */}
+          <div className="springbank-right-section">
+            <img 
+              src="/SpringLeaf.png" 
+              alt="SpringLeaf Logo" 
+              style={{
+                width: '24px',
+                height: '24px',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
+                transition: 'transform 0.3s ease',
+                opacity: '0.8',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'scale(1.1)';
+                e.target.style.opacity = '1';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'scale(1)';
+                e.target.style.opacity = '0.8';
+              }}
+            />
+            {/* Backend Status Indicator */}
+            <div className="springbank-status-section">
+              <span className={`springbank-server-status springbank-status-${serverStatus}`}>
+                {serverStatus === 'connected' ? '🟢 BACKEND CONNECTED' : 
+                 serverStatus === 'disconnected' ? '🔴 BACKEND DISCONNECTED' : 
+                 '🟡 CONNECTING...'}
+              </span>
+            </div>
           </div>
         </div>
       </header>
