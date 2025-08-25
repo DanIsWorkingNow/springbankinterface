@@ -1,4 +1,4 @@
-// src/App.js - Uses Your EXISTING Styling (No Changes to Design)
+// src/App.js - Improved Design with Centered Header & Footer
 import React, { useState, useEffect } from 'react';
 
 // CUSTOMER COMPONENTS (Working)
@@ -15,17 +15,16 @@ import DepositCash from './components/transaction/DepositCash';
 import WithdrawCash from './components/transaction/WithdrawCash';
 import TransactionHistory from './components/transaction/TransactionHistory';
 
-import './App.css'; // Keep your existing CSS file unchanged
+import './App.css';
 
 /**
- * SpringBank Application - Uses Your Original Styling
- * Only adds component routing, keeps all your existing design
+ * SpringBank Application - Improved Design with Centered Layout
  */
 const App = () => {
   const [activeService, setActiveService] = useState('inquire-customer');
   const [serverStatus, setServerStatus] = useState('connecting');
 
-  // Check backend connectivity (optional - remove if you don't want this)
+  // Check backend connectivity
   useEffect(() => {
     const checkBackendConnection = async () => {
       try {
@@ -41,19 +40,19 @@ const App = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // This function returns your actual components instead of placeholder content
+  // This function returns your actual components
   const renderServiceContent = () => {
     switch (activeService) {
-      // ✅ CUSTOMER MANAGEMENT - Your working components
+      // ✅ CUSTOMER MANAGEMENT
       case 'create-customer':
         return <CreateCustomer />;
         
       case 'inquire-customer':
         return <InquireCustomer />;
 
-      // ✅ ACCOUNT MANAGEMENT - Your created components  
+      // ✅ ACCOUNT MANAGEMENT
       case 'create-account':
-        return <CreateAccount />; // 
+        return <CreateAccount />; 
         
       case 'inquire-account':
         return <InquireAccount />;
@@ -61,7 +60,7 @@ const App = () => {
       case 'close-account':
         return <CloseAccount />;
 
-      // ✅ TRANSACTION MANAGEMENT - Your created components
+      // ✅ TRANSACTION MANAGEMENT
       case 'deposit-cash':
         return <DepositCash />;
         
@@ -72,149 +71,118 @@ const App = () => {
       case 'transaction-history':
         return <TransactionHistory />;
 
-      // Keep your original placeholder structure for any missing ones
-      case 'inquire-account-old':
-        return (
-          <div className="springbank-container">
-            <div className="springbank-header">
-              <h2 className="springbank-title">🔍 Inquire Account</h2>
-              <p className="springbank-subtitle">
-                View account details including holder information and balance
-              </p>
-            </div>
-            
-            <div className="springbank-card">
-              <div className="springbank-info-section">
-                <h4 className="springbank-info-title">✅ Features Ready:</h4>
-                <ul className="springbank-info-list">
-                  <li>Account number search functionality</li>
-                  <li>Complete account information display</li>
-                  <li>Customer details integration</li>
-                  <li>Professional card-based layout</li>
-                  <li>Account status and balance information</li>
-                </ul>
-              </div>
-
-              <div className="springbank-text-center springbank-mt-2">
-                <button 
-                  className="springbank-button springbank-button-info"
-                  onClick={() => setActiveService('inquire-customer')}
-                >
-                  🔍 Go to Inquire Customer
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-
       default:
         return <InquireCustomer />;
     }
   };
 
-  // Keep your original App structure - just update the switch statement
   return (
     <div className="springbank-app">
-      <header className="springbank-app-header">
-        <div className="springbank-brand">
-          <h1>🏦 SpringBank</h1>
-          <p>Complete Banking Management System</p>
-        </div>
-        
-        {/* Optional: Backend status indicator (remove if you don't want it) */}
-        <div className="springbank-status">
-          <span className={`springbank-status-indicator ${serverStatus}`}>
-            {serverStatus === 'connected' ? '🟢' : 
-             serverStatus === 'disconnected' ? '🔴' : '🟡'}
-          </span>
-          <span className="springbank-status-text">
-            {serverStatus === 'connected' ? 'BACKEND CONNECTED' : 
-             serverStatus === 'disconnected' ? 'BACKEND DISCONNECTED' : 'CONNECTING...'}
-          </span>
+      {/* Modern Centered Header */}
+      <header className="springbank-header-main">
+        <div className="springbank-header-content">
+          <div className="springbank-brand-section">
+            <h1 className="springbank-app-title">🏦 SpringBank</h1>
+            <p className="springbank-app-subtitle">Complete Banking Management System</p>
+          </div>
+          
+          {/* Backend Status Indicator */}
+          <div className="springbank-status-section">
+            <span className={`springbank-server-status springbank-status-${serverStatus}`}>
+              {serverStatus === 'connected' ? '🟢 BACKEND CONNECTED' : 
+               serverStatus === 'disconnected' ? '🔴 BACKEND DISCONNECTED' : 
+               '🟡 CONNECTING...'}
+            </span>
+          </div>
         </div>
       </header>
 
-      {/* Keep your existing navigation structure */}
+      {/* Navigation with Your Existing Structure */}
       <nav className="springbank-nav">
-        <div className="springbank-nav-tabs">
-          {/* Customer Management */}
-          <button
-            className={`springbank-nav-tab ${activeService === 'create-customer' ? 'active' : ''}`}
-            onClick={() => setActiveService('create-customer')}
-          >
-            <span className="springbank-nav-icon">👤</span>
-            Create Customer
-          </button>
-          
-          <button
-            className={`springbank-nav-tab ${activeService === 'inquire-customer' ? 'active' : ''}`}
-            onClick={() => setActiveService('inquire-customer')}
-          >
-            <span className="springbank-nav-icon">🔍</span>
-            Inquire Customer
-          </button>
+        <div className="springbank-nav-container">
+          <div className="springbank-nav-menu">
+            {/* Customer Management */}
+            <button
+              className={`springbank-nav-button ${activeService === 'create-customer' ? 'active' : ''}`}
+              onClick={() => setActiveService('create-customer')}
+            >
+              <span className="springbank-nav-icon">👤</span>
+              Create Customer
+            </button>
+            
+            <button
+              className={`springbank-nav-button ${activeService === 'inquire-customer' ? 'active' : ''}`}
+              onClick={() => setActiveService('inquire-customer')}
+            >
+              <span className="springbank-nav-icon">🔍</span>
+              Inquire Customer
+            </button>
 
-          {/* Account Management */}
-          <button
-            className={`springbank-nav-tab ${activeService === 'create-account' ? 'active' : ''}`}
-            onClick={() => setActiveService('create-account')}
-          >
-            <span className="springbank-nav-icon">🏦</span>
-            Create Account
-          </button>
-          
-          <button
-            className={`springbank-nav-tab ${activeService === 'inquire-account' ? 'active' : ''}`}
-            onClick={() => setActiveService('inquire-account')}
-          >
-            <span className="springbank-nav-icon">🔍</span>
-            Inquire Account
-          </button>
-          
-          <button
-            className={`springbank-nav-tab ${activeService === 'close-account' ? 'active' : ''}`}
-            onClick={() => setActiveService('close-account')}
-          >
-            <span className="springbank-nav-icon">🔒</span>
-            Close Account
-          </button>
+            {/* Account Management */}
+            <button
+              className={`springbank-nav-button ${activeService === 'create-account' ? 'active' : ''}`}
+              onClick={() => setActiveService('create-account')}
+            >
+              <span className="springbank-nav-icon">🏦</span>
+              Create Account
+            </button>
+            
+            <button
+              className={`springbank-nav-button ${activeService === 'inquire-account' ? 'active' : ''}`}
+              onClick={() => setActiveService('inquire-account')}
+            >
+              <span className="springbank-nav-icon">📊</span>
+              Inquire Account
+            </button>
+            
+            <button
+              className={`springbank-nav-button ${activeService === 'close-account' ? 'active' : ''}`}
+              onClick={() => setActiveService('close-account')}
+            >
+              <span className="springbank-nav-icon">🔒</span>
+              Close Account
+            </button>
 
-          {/* Transaction Management */}
-          <button
-            className={`springbank-nav-tab ${activeService === 'deposit-cash' ? 'active' : ''}`}
-            onClick={() => setActiveService('deposit-cash')}
-          >
-            <span className="springbank-nav-icon">💰</span>
-            Deposit Cash
-          </button>
-          
-          <button
-            className={`springbank-nav-tab ${activeService === 'withdraw-cash' ? 'active' : ''}`}
-            onClick={() => setActiveService('withdraw-cash')}
-          >
-            <span className="springbank-nav-icon">💸</span>
-            Withdraw Cash
-          </button>
+            {/* Transaction Management */}
+            <button
+              className={`springbank-nav-button ${activeService === 'deposit-cash' ? 'active' : ''}`}
+              onClick={() => setActiveService('deposit-cash')}
+            >
+              <span className="springbank-nav-icon">💰</span>
+              Deposit Cash
+            </button>
+            
+            <button
+              className={`springbank-nav-button ${activeService === 'withdraw-cash' ? 'active' : ''}`}
+              onClick={() => setActiveService('withdraw-cash')}
+            >
+              <span className="springbank-nav-icon">💸</span>
+              Withdraw Cash
+            </button>
 
-          {/* Bonus Feature */}
-          <button
-            className={`springbank-nav-tab ${activeService === 'transaction-history' ? 'active' : ''}`}
-            onClick={() => setActiveService('transaction-history')}
-          >
-            <span className="springbank-nav-icon">📊</span>
-            Transaction History
-          </button>
+            {/* Bonus Feature */}
+            <button
+              className={`springbank-nav-button ${activeService === 'transaction-history' ? 'active' : ''}`}
+              onClick={() => setActiveService('transaction-history')}
+            >
+              <span className="springbank-nav-icon">📊</span>
+              Transaction History
+            </button>
+          </div>
         </div>
       </nav>
 
-      {/* Keep your existing main content structure */}
+      {/* Main Content */}
       <main className="springbank-main">
         {renderServiceContent()}
       </main>
 
-      {/* Keep your existing footer */}
+      {/* Centered Professional Footer */}
       <footer className="springbank-footer">
-        <p>&copy; 2025 SpringBank Application - Assessment Complete</p>
+        <div className="springbank-footer-content">
+          <p className="springbank-footer-text">© 2025 SpringBank Application - Assessment Complete</p>
+          <p className="springbank-footer-subtext">Professional Banking Management System | Full-Stack Development Portfolio</p>
+        </div>
       </footer>
     </div>
   );
