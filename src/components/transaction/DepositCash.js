@@ -122,7 +122,7 @@ const DepositCash = () => {
     if (amount === null || amount === undefined) return 'N/A';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'MYR'
     }).format(amount);
   };
 
@@ -216,7 +216,7 @@ const DepositCash = () => {
           <div className="form-group">
             <label htmlFor="amount">Deposit Amount *</label>
             <div className="amount-input-wrapper">
-              <span className="currency-symbol">$</span>
+              <span className="currency-symbol">RM</span>
               <input
                 id="amount"
                 name="amount"
@@ -232,7 +232,7 @@ const DepositCash = () => {
               <span className="error-text">{formErrors.amount}</span>
             )}
             <small className="help-text">
-              Maximum daily deposit: $50,000
+              Maximum daily deposit: RM20,000
             </small>
           </div>
 

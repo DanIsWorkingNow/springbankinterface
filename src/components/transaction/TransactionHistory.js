@@ -68,7 +68,7 @@ const TransactionHistory = () => {
   const formatAmount = (amount, type) => {
     const formattedAmount = parseFloat(amount || 0).toFixed(2);
     const prefix = type?.toUpperCase() === 'WITHDRAWAL' ? '-' : '+';
-    return `${prefix}$${formattedAmount}`;
+    return `${prefix}RM${formattedAmount}`;
   };
 
   const formatDate = (dateString) => {
@@ -169,7 +169,7 @@ const TransactionHistory = () => {
                       {formatAmount(transaction.amount, transaction.transactionType)}
                     </span>
                     <p className="balance-after">
-                      Balance: ${parseFloat(transaction.balanceAfter || transaction.balance || 0).toFixed(2)}
+                      Balance: RM{parseFloat(transaction.balanceAfter || transaction.balance || 0).toFixed(2)}
                     </p>
                     {transaction.transactionId && (
                       <p className="transaction-id">

@@ -122,7 +122,7 @@ const WithdrawCash = () => {
     if (amount === null || amount === undefined) return 'N/A';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'MYR'
     }).format(amount);
   };
 
@@ -222,7 +222,7 @@ const WithdrawCash = () => {
           <div className="form-group">
             <label htmlFor="amount">Withdrawal Amount *</label>
             <div className="amount-input-wrapper">
-              <span className="currency-symbol">$</span>
+              <span className="currency-symbol">RM</span>
               <input
                 id="amount"
                 name="amount"
@@ -238,7 +238,7 @@ const WithdrawCash = () => {
               <span className="error-text">{formErrors.amount}</span>
             )}
             <small className="help-text">
-              Maximum daily withdrawal: $10,000
+              Maximum daily withdrawal: RM10,000
             </small>
           </div>
 
