@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+// Add these imports to your existing App.js
+import DepositCash from './components/transaction/DepositCash';
+import WithdrawCash from './components/transaction/WithdrawCash';
+import TransactionHistory from './components/transaction/TransactionHistory';
 
 // API Service Layer
 const API_BASE_URL = 'http://localhost:8080';
@@ -440,6 +444,12 @@ const App = () => {
         return <CreateCustomer />;
       case 'inquire-customer':
         return <InquireCustomer />;
+        case 'deposit-cash':
+  return <DepositCash />;
+case 'withdraw-cash':
+  return <WithdrawCash />;
+case 'transaction-history': // if you want to add this
+  return <TransactionHistory />;
       case 'create-account':
         return <CreateAccountPlaceholder />;
       case 'inquire-account':
@@ -460,6 +470,7 @@ const App = () => {
             </div>
           </div>
         );
+        
       case 'deposit-cash':
         return (
           <div className="max-w-2xl mx-auto p-6">

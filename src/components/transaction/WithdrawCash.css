@@ -1,0 +1,112 @@
+/* WithdrawCash.css */
+.withdraw-cash {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.withdraw-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.withdraw-header h2 {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.withdraw-header p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.warning-notice {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  border: 1px solid #ffc107;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.warning-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.warning-content h4 {
+  color: #856404;
+  margin-bottom: 0.5rem;
+}
+
+.warning-content p {
+  color: #856404;
+  margin: 0;
+}
+
+.withdraw-form {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.withdraw-button {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+  min-width: 200px;
+}
+
+.withdraw-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #c82333, #bd2130);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+}
+
+.withdraw-button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.withdraw-info {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.withdraw-info h4 {
+  color: #495057;
+  margin-bottom: 1rem;
+}
+
+.withdraw-info ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.withdraw-info li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.withdraw-info li:before {
+  content: "⚠️";
+  position: absolute;
+  left: 0;
+}

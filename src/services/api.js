@@ -214,11 +214,36 @@ export const transactionAPI = {
    */
   depositCash: async (transactionData) => {
     try {
-      const response = await api.post('/transactions/deposit', transactionData);
+      // Ensure the data matches your backend DTO structure
+      const requestData = {
+        accountNumber: transactionData.accountNumber,
+        amount: transactionData.amount,
+        description: transactionData.description || 'Cash deposit'
+      };
+      
+      const response = await api.post('/transactions/deposit', requestData);
+      
+      // Log successful transaction
+      console.log('Deposit successful:', response.data);
+      
       return response.data;
     } catch (error) {
       console.error('Error processing deposit:', error);
-      throw error;
+      
+      // Enhanced error handling for better user experience
+      if (error.response) {
+        // Server responded with error
+        const errorMessage = error.response.data?.message || 
+                           error.response.data?.error || 
+                           `Deposit failed: ${error.response.statusText}`;
+        throw new Error(errorMessage);
+      } else if (error.request) {
+        // Request made but no response
+        throw new Error('Unable to connect to server. Please check your connection and try again.');
+      } else {
+        // Something else happened
+        throw new Error('An unexpected error occurred during deposit processing.');
+      }
     }
   },
 
@@ -228,28 +253,83 @@ export const transactionAPI = {
    */
   withdrawCash: async (transactionData) => {
     try {
-      const response = await api.post('/transactions/withdraw', transactionData);
+      // Ensure the data matches your backend DTO structure
+      const requestData = {
+        accountNumber: transactionData.accountNumber,
+        amount: transactionData.amount,
+        description: transactionData.description || 'Cash withdrawal'
+      };
+      
+      const response = await api.post('/transactions/withdraw', requestData);
+      
+      // Log successful transaction
+      console.log('Withdrawal successful:', response.data);
+      
       return response.data;
     } catch (error) {
       console.error('Error processing withdrawal:', error);
-      throw error;
+      
+      // Enhanced error handling for better user experience
+      if (error.response) {
+        // Server responded with error
+        const errorMessage = error.response.data?.message || 
+                           error.response.data?.error || 
+                           `Withdrawal failed: ${error.response.statusText}`;
+        throw new Error(errorMessage);
+      } else if (error.request) {
+        // Request made but no response
+        throw new Error('Unable to connect to server. Please check your connection and try again.');
+      } else {
+        // Something else happened
+        throw new Error('An unexpected error occurred during withdrawal processing.');
+      }
     }
   },
 
-  // Additional transaction endpoints
+  /**
+   * GET TRANSACTION HISTORY - Bonus Feature
+   * Fetches all transactions for a specific account
+   */
   getTransactionHistory: async (accountNumber) => {
     try {
       const response = await api.get(`/transactions/account/${accountNumber}`);
-      return response.data;
+      
+      // Ensure we return an array
+      const transactions = Array.isArray(response.data) ? response.data : [];
+      
+      // Sort by date descending (most recent first)
+      transactions.sort((a, b) => {
+        const dateA = new Date(a.transactionDate || a.createdDate || 0);
+        const dateB = new Date(b.transactionDate || b.createdDate || 0);
+        return dateB - dateA;
+      });
+      
+      console.log(`Retrieved ${transactions.length} transactions for account ${accountNumber}`);
+      
+      return transactions;
     } catch (error) {
       console.error('Error fetching transaction history:', error);
-      throw error;
+      
+      if (error.response) {
+        const errorMessage = error.response.data?.message || 
+                           error.response.data?.error || 
+                           `Failed to fetch transaction history: ${error.response.statusText}`;
+        throw new Error(errorMessage);
+      } else if (error.request) {
+        throw new Error('Unable to connect to server. Please check your connection and try again.');
+      } else {
+        throw new Error('An unexpected error occurred while fetching transaction history.');
+      }
     }
   },
 
-  getAllTransactions: async () => {
+  /**
+   * GET ALL TRANSACTIONS - Admin Feature
+   * Fetches all transactions (for admin/reporting purposes)
+   */
+  getAllTransactions: async (page = 0, size = 50) => {
     try {
-      const response = await api.get('/transactions');
+      const response = await api.get(`/transactions?page=${page}&size=${size}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching all transactions:', error);
@@ -257,6 +337,10 @@ export const transactionAPI = {
     }
   },
 
+  /**
+   * GET RECENT TRANSACTIONS - Dashboard Feature
+   * Fetches most recent transactions across all accounts
+   */
   getRecentTransactions: async (limit = 10) => {
     try {
       const response = await api.get(`/transactions/recent?limit=${limit}`);
@@ -265,7 +349,148 @@ export const transactionAPI = {
       console.error('Error fetching recent transactions:', error);
       throw error;
     }
+  },
+
+  /**
+   * VALIDATE TRANSACTION - Pre-validation
+   * Validates transaction before processing (optional)
+   */
+  validateTransaction: async (transactionData) => {
+    try {
+      // This would call a validation endpoint if you have one
+      const response = await api.post('/transactions/validate', transactionData);
+      return response.data;
+    } catch (error) {
+      console.error('Error validating transaction:', error);
+      throw error;
+    }
   }
+};
+
+// ========================================
+// TRANSACTION UTILITY FUNCTIONS
+// ========================================
+
+/**
+ * Format transaction amount for display
+ */
+export const formatTransactionAmount = (amount, type) => {
+  const formattedAmount = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2
+  }).format(Math.abs(amount));
+  
+  return type?.toUpperCase() === 'WITHDRAWAL' ? `-${formattedAmount}` : formattedAmount;
+};
+
+/**
+ * Get transaction type display name
+ */
+export const getTransactionTypeDisplay = (type) => {
+  const types = {
+    'DEPOSIT': 'Deposit',
+    'WITHDRAWAL': 'Withdrawal', 
+    'TRANSFER': 'Transfer',
+    'FEE': 'Fee',
+    'INTEREST': 'Interest'
+  };
+  
+  return types[type?.toUpperCase()] || 'Transaction';
+};
+
+/**
+ * Validate account number format (customize based on your format)
+ */
+export const validateAccountNumber = (accountNumber) => {
+  if (!accountNumber) return false;
+  
+  // Customize this regex based on your account number format
+  // This is a general pattern - adjust as needed
+  const accountPattern = /^[A-Za-z0-9]{3,20}$/;
+  return accountPattern.test(accountNumber.trim());
+};
+
+/**
+ * Validate transaction amount
+ */
+export const validateTransactionAmount = (amount, maxAmount = 1000000) => {
+  if (!amount) return { valid: false, message: 'Amount is required' };
+  
+  const numAmount = parseFloat(amount);
+  
+  if (isNaN(numAmount)) {
+    return { valid: false, message: 'Please enter a valid number' };
+  }
+  
+  if (numAmount <= 0) {
+    return { valid: false, message: 'Amount must be greater than 0' };
+  }
+  
+  if (numAmount > maxAmount) {
+    return { valid: false, message: `Amount cannot exceed $${maxAmount.toLocaleString()}` };
+  }
+  
+  return { valid: true, message: '' };
+};
+
+/**
+ * Calculate transaction fee (if applicable)
+ */
+export const calculateTransactionFee = (amount, transactionType, accountType = 'SAVINGS') => {
+  // Customize fee calculation based on your business rules
+  const feeRates = {
+    'SAVINGS': {
+      'DEPOSIT': 0, // No fee for deposits
+      'WITHDRAWAL': amount > 1000 ? 5 : 0 // $5 fee for withdrawals over $1000
+    },
+    'CURRENT': {
+      'DEPOSIT': 0,
+      'WITHDRAWAL': 2 // $2 fee for all withdrawals
+    },
+    'FIXED_DEPOSIT': {
+      'DEPOSIT': 0,
+      'WITHDRAWAL': 25 // $25 early withdrawal fee
+    }
+  };
+  
+  return feeRates[accountType]?.[transactionType] || 0;
+};
+
+// ========================================
+// ERROR HANDLING UTILITIES
+// ========================================
+
+/**
+ * Parse API error messages for user-friendly display
+ */
+export const parseTransactionError = (error) => {
+  if (!error) return 'An unknown error occurred';
+  
+  // Common transaction errors
+  const errorMappings = {
+    'INSUFFICIENT_FUNDS': 'Insufficient funds in your account',
+    'ACCOUNT_NOT_FOUND': 'Account not found. Please check the account number',
+    'ACCOUNT_CLOSED': 'Cannot process transaction. Account is closed',
+    'ACCOUNT_SUSPENDED': 'Account is temporarily suspended',
+    'INVALID_AMOUNT': 'Please enter a valid amount',
+    'DAILY_LIMIT_EXCEEDED': 'Daily transaction limit exceeded',
+    'INVALID_ACCOUNT_NUMBER': 'Invalid account number format',
+    'TRANSACTION_LIMIT_EXCEEDED': 'Transaction amount exceeds allowed limit',
+    'ACCOUNT_INACTIVE': 'Account is inactive. Please contact support'
+  };
+  
+  // Check if error message contains known error codes
+  const errorMessage = error.message || error.toString();
+  
+  for (const [code, userMessage] of Object.entries(errorMappings)) {
+    if (errorMessage.toUpperCase().includes(code)) {
+      return userMessage;
+    }
+  }
+  
+  // Return the original error message if no mapping found
+  return errorMessage;
 };
 
 // ========================================
@@ -292,13 +517,7 @@ export const checkServerConnection = async () => {
   }
 };
 
-/**
- * Validate account number format
- */
-export const validateAccountNumber = (accountNumber) => {
-  const accountPattern = /^ACC\d{13}$/;
-  return accountPattern.test(accountNumber);
-};
+
 
 /**
  * Format currency display
