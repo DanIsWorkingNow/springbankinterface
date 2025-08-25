@@ -1,34 +1,86 @@
+// src/components/customer/CreateCustomer.js
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { customerAPI } from '../../services/api';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
-import './CreateCustomer.css';
 
+/**
+ * Enhanced Create Customer Component
+ * Matches the professional styling of Deposit/Withdraw Cash pages
+ * Fixed to work with your existing API structure
+ * Assessment Requirement: "Create Customer: Accepts customer name and creates a customer with auto-generated ID"
+ */
 const CreateCustomer = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors },
-    reset 
-  } = useForm();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: ''
+  });
+  const [formErrors, setFormErrors] = useState({});
 
-  const onSubmit = async (data) => {
+  const validateForm = () => {
+    const errors = {};
+    
+    if (!formData.name.trim()) {
+      errors.name = 'Full name is required';
+    } else if (formData.name.trim().length < 2) {
+      errors.name = 'Name must be at least 2 characters long';
+    }
+
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+
+    if (formData.phone && formData.phone.length > 20) {
+      errors.phone = 'Phone number must not exceed 20 characters';
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
+    // Clear specific field error when user starts typing
+    if (formErrors[name]) {
+      setFormErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setSuccess(null);
 
     try {
-      const result = await customerAPI.create(data);
-      setSuccess({
-        message: `Customer created successfully!`,
-        data: result
-      });
-      reset(); // Clear form
+      const customerData = {
+        name: formData.name.trim(),
+        email: formData.email.trim() || null,
+        phone: formData.phone.trim() || null
+      };
+
+      // Using your existing customerAPI structure
+      const newCustomer = await customerAPI.create(customerData);
+      setSuccess(newCustomer);
+      setFormData({ name: '', email: '', phone: '' });
+      setFormErrors({});
     } catch (err) {
       setError(err);
     } finally {
@@ -36,79 +88,147 @@ const CreateCustomer = () => {
     }
   };
 
+  const handleRetry = () => {
+    setError(null);
+    setSuccess(null);
+  };
+
   if (loading) {
-    return <LoadingSpinner message="Creating customer..." />;
+    return <LoadingSpinner message="Creating customer account..." />;
   }
 
   return (
-    <div className="create-customer">
-      <h2>Create New Customer</h2>
-      
-      {error && <ErrorMessage error={error} />}
-      
+    <div className="springbank-container">
+      {/* Header Section */}
+      <div className="springbank-header">
+        <h2 className="springbank-title">
+          👤 Create New Customer
+        </h2>
+        <p className="springbank-subtitle">
+          Add a new customer to the SpringBank system
+        </p>
+      </div>
+
+      {/* Success Message */}
       {success && (
-        <div className="success-message">
-          <h3>Success!</h3>
-          <p>{success.message}</p>
-          <div className="customer-details">
-            <p><strong>ID:</strong> {success.data.id}</p>
-            <p><strong>Name:</strong> {success.data.name}</p>
-            <p><strong>Email:</strong> {success.data.email}</p>
-            <p><strong>Created:</strong> {new Date(success.data.createdDate).toLocaleString()}</p>
+        <div className="springbank-success">
+          <h3 className="springbank-success-title">✅ Customer Created Successfully!</h3>
+          <div className="springbank-success-details">
+            <div className="springbank-detail-row">
+              <span className="springbank-detail-label">Customer ID:</span>
+              <span className="springbank-highlight-value">{success.id}</span>
+            </div>
+            <div className="springbank-detail-row">
+              <span className="springbank-detail-label">Name:</span>
+              <span className="springbank-detail-value">{success.name}</span>
+            </div>
+            {success.email && (
+              <div className="springbank-detail-row">
+                <span className="springbank-detail-label">Email:</span>
+                <span className="springbank-detail-value">{success.email}</span>
+              </div>
+            )}
+            {success.phone && (
+              <div className="springbank-detail-row">
+                <span className="springbank-detail-label">Phone:</span>
+                <span className="springbank-detail-value">{success.phone}</span>
+              </div>
+            )}
+            <div className="springbank-detail-row">
+              <span className="springbank-detail-label">Created Date:</span>
+              <span className="springbank-detail-value">
+                {new Date(success.createdDate).toLocaleString()}
+              </span>
+            </div>
           </div>
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="customer-form">
-        <div className="form-group">
-          <label htmlFor="name">Name *</label>
-          <input
-            id="name"
-            type="text"
-            {...register('name', { 
-              required: 'Name is required',
-              minLength: { value: 2, message: 'Name must be at least 2 characters' },
-              maxLength: { value: 100, message: 'Name must not exceed 100 characters' }
-            })}
-            className={errors.name ? 'error' : ''}
-          />
-          {errors.name && <span className="error-text">{errors.name.message}</span>}
-        </div>
+      {/* Error Message */}
+      {error && <ErrorMessage error={error} onRetry={handleRetry} />}
 
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            {...register('email', {
-              pattern: {
-                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: 'Please enter a valid email address'
-              },
-              maxLength: { value: 100, message: 'Email must not exceed 100 characters' }
-            })}
-            className={errors.email ? 'error' : ''}
-          />
-          {errors.email && <span className="error-text">{errors.email.message}</span>}
-        </div>
+      {/* Create Customer Form */}
+      <div className="springbank-card">
+        <form onSubmit={handleSubmit} className="springbank-form">
+          {/* Full Name Field */}
+          <div className="springbank-form-group">
+            <label className="springbank-label">
+              Full Name *
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              placeholder="Enter customer's full name"
+              className={`springbank-input ${formErrors.name ? 'error' : ''}`}
+              required
+            />
+            {formErrors.name && (
+              <span className="springbank-error-text">{formErrors.name}</span>
+            )}
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="phone">Phone</label>
-          <input
-            id="phone"
-            type="tel"
-            {...register('phone', {
-              maxLength: { value: 20, message: 'Phone must not exceed 20 characters' }
-            })}
-            className={errors.phone ? 'error' : ''}
-          />
-          {errors.phone && <span className="error-text">{errors.phone.message}</span>}
-        </div>
+          {/* Email Field */}
+          <div className="springbank-form-group">
+            <label className="springbank-label">
+              Email Address (Optional)
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder="customer@example.com"
+              className={`springbank-input ${formErrors.email ? 'error' : ''}`}
+            />
+            {formErrors.email && (
+              <span className="springbank-error-text">{formErrors.email}</span>
+            )}
+          </div>
 
-        <button type="submit" className="submit-button">
-          Create Customer
-        </button>
-      </form>
+          {/* Phone Field */}
+          <div className="springbank-form-group">
+            <label className="springbank-label">
+              Phone Number (Optional)
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleInputChange}
+              placeholder="+1-234-567-8900"
+              className={`springbank-input ${formErrors.phone ? 'error' : ''}`}
+            />
+            {formErrors.phone && (
+              <span className="springbank-error-text">{formErrors.phone}</span>
+            )}
+          </div>
+
+          {/* Submit Button */}
+          <div className="springbank-text-center springbank-mt-2">
+            <button
+              type="submit"
+              disabled={loading}
+              className="springbank-button springbank-button-primary"
+            >
+              <span>👤</span>
+              Create Customer
+            </button>
+          </div>
+        </form>
+
+        {/* Information Section */}
+        <div className="springbank-info-section">
+          <h4 className="springbank-info-title">Important Information:</h4>
+          <ul className="springbank-info-list">
+            <li>Customer ID will be automatically generated</li>
+            <li>Full name is required for account creation</li>
+            <li>Email and phone are optional but recommended</li>
+            <li>Customer can have multiple accounts</li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };
