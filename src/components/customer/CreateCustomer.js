@@ -1,4 +1,5 @@
 // src/components/customer/CreateCustomer.js
+// Fixed to work with your existing API method names
 import React, { useState } from 'react';
 import { customerAPI } from '../../services/api';
 import LoadingSpinner from '../common/LoadingSpinner';
@@ -6,8 +7,7 @@ import ErrorMessage from '../common/ErrorMessage';
 
 /**
  * Enhanced Create Customer Component
- * Matches the professional styling of Deposit/Withdraw Cash pages
- * Fixed to work with your existing API structure
+ * Fixed to work with your existing API structure (customerAPI.createCustomer)
  * Assessment Requirement: "Create Customer: Accepts customer name and creates a customer with auto-generated ID"
  */
 const CreateCustomer = () => {
@@ -76,12 +76,16 @@ const CreateCustomer = () => {
         phone: formData.phone.trim() || null
       };
 
-      // Using your existing customerAPI structure
-      const newCustomer = await customerAPI.create(customerData);
+      // Using YOUR existing API method name: createCustomer (not create)
+      console.log('🚀 Calling customerAPI.createCustomer with:', customerData);
+      const newCustomer = await customerAPI.createCustomer(customerData);
+      console.log('✅ Customer created successfully:', newCustomer);
+      
       setSuccess(newCustomer);
       setFormData({ name: '', email: '', phone: '' });
       setFormErrors({});
     } catch (err) {
+      console.error('❌ Customer creation failed:', err);
       setError(err);
     } finally {
       setLoading(false);
@@ -137,7 +141,7 @@ const CreateCustomer = () => {
             <div className="springbank-detail-row">
               <span className="springbank-detail-label">Created Date:</span>
               <span className="springbank-detail-value">
-                {new Date(success.createdDate).toLocaleString()}
+                {success.createdDate ? new Date(success.createdDate).toLocaleString() : 'Just now'}
               </span>
             </div>
           </div>

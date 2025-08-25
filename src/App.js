@@ -209,7 +209,7 @@ const App = () => {
                   <li>Success messages with transaction details</li>
                 </ul>
                 <p style={{ marginTop: '1rem', textAlign: 'center', fontWeight: '600', color: '#28a745' }}>
-                  <strong>This is the design standard we're matching for all pages!</strong>
+                  
                 </p>
               </div>
             </div>

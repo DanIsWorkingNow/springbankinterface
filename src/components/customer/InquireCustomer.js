@@ -1,4 +1,5 @@
 // src/components/customer/InquireCustomer.js
+// Fixed to work with your existing API method names
 import React, { useState } from 'react';
 import { customerAPI } from '../../services/api';
 import LoadingSpinner from '../common/LoadingSpinner';
@@ -6,8 +7,7 @@ import ErrorMessage from '../common/ErrorMessage';
 
 /**
  * Enhanced Inquire Customer Component
- * Matches the professional styling of Deposit/Withdraw Cash pages
- * Fixed to work with your existing API structure
+ * Fixed to work with your existing API structure (customerAPI.getCustomerById)
  * Assessment Requirement: "Inquire Customer: Returns customer details by customer ID"
  */
 const InquireCustomer = () => {
@@ -45,10 +45,16 @@ const InquireCustomer = () => {
     setCustomer(null);
 
     try {
-      // Using your existing customerAPI structure
-      const result = await customerAPI.getById(parseInt(customerId));
+      const customerIdInt = parseInt(customerId);
+      
+      // Using YOUR existing API method name: getCustomerById (not getById)
+      console.log('🚀 Calling customerAPI.getCustomerById with ID:', customerIdInt);
+      const result = await customerAPI.getCustomerById(customerIdInt);
+      console.log('✅ Customer found:', result);
+      
       setCustomer(result);
     } catch (err) {
+      console.error('❌ Customer inquiry failed:', err);
       setError(err);
     } finally {
       setLoading(false);
@@ -134,7 +140,7 @@ const InquireCustomer = () => {
 
         {/* Quick Search Suggestions */}
         <div className="springbank-quick-search">
-          <h4 className="springbank-quick-search-title">Quick Search (Sample Data):</h4>
+          <h4 className="springbank-quick-search-title">Quick Search:</h4>
           <div className="springbank-quick-search-buttons">
             {[1, 2, 3, 4, 5].map(id => (
               <button
@@ -195,7 +201,7 @@ const InquireCustomer = () => {
             <div className="springbank-detail-row">
               <span className="springbank-detail-label">Created Date:</span>
               <span className="springbank-detail-value">
-                {new Date(customer.createdDate).toLocaleString()}
+                {customer.createdDate ? new Date(customer.createdDate).toLocaleString() : 'Unknown'}
               </span>
             </div>
 
@@ -214,7 +220,7 @@ const InquireCustomer = () => {
             <button
               onClick={() => {
                 // Navigate to create account or trigger navigation
-                alert('Navigate to Create Account for Customer ID: ' + customer.id);
+                alert(`Create Account for Customer: ${customer.name} (ID: ${customer.id})`);
               }}
               className="springbank-action-btn"
             >
@@ -247,7 +253,6 @@ const InquireCustomer = () => {
         <h4 className="springbank-info-title">Search Information:</h4>
         <ul className="springbank-info-list">
           <li>Use customer ID numbers to search (1, 2, 3, etc.)</li>
-          <li>Sample customers with IDs 1-5 are available for testing</li>
           <li>Customer details include contact information and creation date</li>
           <li>After finding a customer, you can create accounts or transactions</li>
         </ul>
